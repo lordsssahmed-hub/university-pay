@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة السداد الإلكتروني - جامعة قناة السويس</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#0f2042',
+                            900: '#0a152d',
+                        },
+                        gold: {
+                            500: '#d4af37',
+                            600: '#c5a028',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="bg-navy-900 text-white border-b border-gold-500/30 shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-12 h-12 bg-white rounded-full p-1 flex items-center justify-center shadow-md">
+                    <svg class="w-8 h-8 text-navy-900" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">جامعة قناة السويس</h1>
+                    <p class="text-xs text-gold-500 font-semibold">بوابة الخدمات والسداد الإلكتروني</p>
+                </div>
+            </div>
+            <div id="userHeaderInfo" class="hidden items-center space-x-3 space-x-reverse">
+                <span id="userNameNav" class="text-sm font-semibold hidden md:inline">أحمد محمود محمد عبدالرحيم</span>
+                <button onclick="logout()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg transition shadow">تسجيل الخروج</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
+
+        <!-- Views Container -->
+        <div id="views">
+
+            <!-- 1. LOGIN VIEW -->
+            <div id="loginView" class="max-w-md mx-auto glass-card rounded-2xl shadow-2xl p-6 md:p-8 border border-slate-100">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-navy-900 text-gold-500 rounded-full mx-auto flex items-center justify-center mb-3 shadow-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-navy-900">تسجيل الدخول للطالب</h2>
+                    <p class="text-xs text-slate-500 mt-1">أدخل الرقم الجامعي وكلمة المرور للوصول للخدمات</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">الرقم الجامعي (Student ID)</label>
+                        <input type="text" id="studentIdInput" required placeholder="125020050" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-navy-900 focus:border-navy-900 outline-none transition text-left dir-ltr">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">كلمة المرور (Password)</label>
+                        <input type="password" id="passwordInput" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-navy-900 focus:border-navy-900 outline-none transition text-left dir-ltr">
+                    </div>
+                    
+                    <div id="loginError" class="hidden text-xs text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200 text-center font-semibold">
+                        الرقم الجامعي أو كلمة المرور غير صحيحة.
+                    </div>
+
+                    <button type="submit" class="w-full bg-navy-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition duration-200">
+                        دخول المنصة
+                    </button>
+                </form>
+            </div>
+
+            <!-- 2. DASHBOARD VIEW -->
+            <div id="dashboardView" class="hidden space-y-6">
+                <!-- Student Card -->
+                <div class="glass-card rounded-2xl p-6 shadow-xl border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full">طالب منتظم</span>
+                        <h2 id="studentName" class="text-2xl font-extrabold text-navy-900 mt-2">أحمد محمود محمد عبدالرحيم</h2>
+                        <p class="text-sm text-slate-600 mt-1">الرقم الجامعي: <span id="studentIdDisp" class="font-bold text-slate-800">125020050</span></p>
+                        <p class="text-sm text-slate-600">الكلية: الحاسبات والمعلومات | العام الدراسي: 2026/2025</p>
+                    </div>
+                    <div class="bg-navy-900 text-white px-5 py-3 rounded-xl text-center w-full md:w-auto shadow-md">
+                        <span class="text-xs text-slate-300 block">إجمالي المستحق للسداد</span>
+                        <span class="text-2xl font-black text-gold-500">52,000.00 ج.م</span>
+                    </div>
+                </div>
+
+                <!-- Fees Breakdown -->
+                <div class="glass-card rounded-2xl p-6 shadow-xl border border-slate-100">
+                    <h3 class="text-lg font-bold text-navy-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                        تفاصيل المصروفات الدراسية
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center py-2.5 border-b border-slate-200">
+                            <span class="text-slate-700 font-semibold">رسوم الدراسة للفصل الدراسي الحالي</span>
+                            <span class="font-bold text-slate-900">43,500.00 ج.م</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2.5 border-b border-slate-200">
+                            <span class="text-slate-700 font-semibold">رسوم إدارية وخدمات إلكترونية</span>
+                            <span class="font-bold text-slate-900">8,500.00 ج.م</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 text-lg font-extrabold bg-slate-100 px-4 rounded-xl">
+                            <span class="text-navy-900">المبلغ الإجمالي المطلوبة للدفعة</span>
+                            <span class="text-emerald-700">52,000.00 ج.م</span>
+                        </div>
+                    </div>
+
+                    <button onclick="goToPayment()" class="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-2 text-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        الانتقال للسداد الإلكتروني
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. PAYMENT FORM VIEW -->
+            <div id="paymentView" class="hidden max-w-lg mx-auto glass-card rounded-2xl shadow-2xl p-6 border border-slate-100">
+                <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-200">
+                    <h3 class="text-xl font-bold text-navy-900">بوابة الدفع الآمنة</h3>
+                    <button onclick="showView('dashboardView')" class="text-xs text-slate-500 hover:text-navy-900 font-semibold">رجوع للخلف</button>
+                </div>
+
+                <div class="bg-blue-50 text-blue-900 p-3 rounded-xl mb-4 text-xs font-semibold flex justify-between items-center">
+                    <span>المبلغ المراد دفعه:</span>
+                    <span class="text-base font-extrabold text-blue-950">52,000.00 ج.م</span>
+                </div>
+
+                <form onsubmit="processPayment(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">الاسم كما يظهر على البطاقة</label>
+                        <input type="text" required placeholder="AHMED MAHMOUD" class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-navy-900 outline-none text-sm uppercase">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">رقم البطاقة البنكية</label>
+                        <input type="text" required maxlength="19" placeholder="4111 •••• •••• 1111" class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-navy-900 outline-none text-sm dir-ltr tracking-widest">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">تاريخ الانتهاء</label>
+                            <input type="text" required placeholder="MM/YY" maxlength="5" class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-navy-900 outline-none text-sm text-center dir-ltr">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">رمز الأمان (CVV)</label>
+                            <input type="password" required maxlength="4" placeholder="123" class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-navy-900 outline-none text-sm text-center dir-ltr">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" id="payBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200">
+                            تأكيد ودفع 52,000.00 ج.م
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 4. RECEIPT VIEW -->
+            <div id="receiptView" class="hidden max-w-xl mx-auto glass-card rounded-2xl shadow-2xl p-6 border border-slate-100">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full mx-auto flex items-center justify-center mb-2 shadow">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-emerald-800">تمت عملية السداد بنجاح</h2>
+                    <p class="text-xs text-slate-500">إيصال سداد إلكتروني معتمد - جامعة قناة السويس</p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2.5 text-xs mb-6">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">رقم الإيصال:</span>
+                        <span id="receiptNum" class="font-mono font-bold text-slate-800">SCU-2026-9812</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">تاريخ السداد:</span>
+                        <span id="receiptDate" class="font-bold text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">اسم الطالب:</span>
+                        <span class="font-bold text-slate-800">أحمد محمود محمد عبدالرحيم</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">الرقم الجامعي:</span>
+                        <span class="font-bold text-slate-800">125020050</span>
+                    </div>
+                    <div class="flex justify-between border-t border-slate-200 pt-2 font-bold text-sm">
+                        <span class="text-navy-900">المبلغ المدفوع:</span>
+                        <span class="text-emerald-700">52,000.00 ج.م</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 no-print">
+                    <button onclick="window.print()" class="flex-1 bg-navy-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                        طباعة الإيصال / حفظ PDF
+                    </button>
+                    <button onclick="showView('dashboardView')" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition">
+                        العودة للرئيسية
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy-900 text-slate-400 text-center py-4 text-xs border-t border-slate-800">
+        <p>© 2026 جميع الحقوق محفوظة - مركز المعلومات والتطوير - جامعة قناة السويس</p>
+    </footer>
+
+    <!-- App Logic -->
+    <script>
+        function showView(viewId) {
+            ['loginView', 'dashboardView', 'paymentView', 'receiptView'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const id = document.getElementById('studentIdInput').value.trim();
+            const pass = document.getElementById('passwordInput').value.trim();
+
+            if (id === '125020050' && pass === '07890789') {
+                document.getElementById('loginError').classList.add('hidden');
+                document.getElementById('userHeaderInfo').classList.remove('hidden');
+                showView('dashboardView');
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            document.getElementById('userHeaderInfo').classList.add('hidden');
+            document.getElementById('studentIdInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            showView('loginView');
+        }
+
+        function goToPayment() {
+            showView('paymentView');
+        }
+
+        function processPayment(event) {
+            event.preventDefault();
+            const payBtn = document.getElementById('payBtn');
+            payBtn.disabled = true;
+            payBtn.innerText = 'جاري معالجة الدفع...';
+
+            setTimeout(() => {
+                payBtn.disabled = false;
+                payBtn.innerText = 'تأكيد ودفع 52,000.00 ج.م';
+                
+                // Set receipt date
+                const now = new Date();
+                document.getElementById('receiptDate').innerText = now.toLocaleString('ar-EG');
+                document.getElementById('receiptNum').innerText = 'SCU-' + Math.floor(100000 + Math.random() * 900000);
+                
+                showView('receiptView');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
